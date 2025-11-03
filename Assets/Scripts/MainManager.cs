@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -11,6 +12,7 @@ public class MainManager : MonoBehaviour
     public Rigidbody Ball;
 
     public Text ScoreText;
+    public Text BestScoreText;
     public GameObject GameOverText;
     
     private bool m_Started = false;
@@ -65,7 +67,17 @@ public class MainManager : MonoBehaviour
     void AddPoint(int point)
     {
         m_Points += point;
-        ScoreText.text = $"Score : {m_Points}";
+        ScoreText.text = $"Score : {GameManager.Instance.UserName}: {m_Points}";
+        if((m_Points > 0) && (GameManager.Instance.BestScore <= m_Points))
+        {
+            GameManager.Instance.BestScore = m_Points;
+            UpdateBestScore();
+        }
+    }
+
+    void UpdateBestScore()
+    {
+        BestScoreText.text = GameManager.Instance.GetBestText();
     }
 
     public void GameOver()
